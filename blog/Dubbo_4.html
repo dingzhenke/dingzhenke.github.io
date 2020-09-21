@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dubbo源码分析之Refer | Blog</title>
+    <meta name="generator" content="VuePress 1.5.0">
+    
+    <meta name="description" content="dzk's blog">
+    <link rel="preload" href="/assets/css/0.styles.2c22b78c.css" as="style"><link rel="preload" href="/assets/js/app.a927c567.js" as="script"><link rel="preload" href="/assets/js/3.c964e36d.js" as="script"><link rel="preload" href="/assets/js/1.31ea971f.js" as="script"><link rel="preload" href="/assets/js/23.fdf72467.js" as="script"><link rel="prefetch" href="/assets/js/10.99a4f183.js"><link rel="prefetch" href="/assets/js/11.8057c1eb.js"><link rel="prefetch" href="/assets/js/12.9006e519.js"><link rel="prefetch" href="/assets/js/13.ef351ee7.js"><link rel="prefetch" href="/assets/js/14.1f9e729a.js"><link rel="prefetch" href="/assets/js/15.f8063842.js"><link rel="prefetch" href="/assets/js/16.a5f3bdba.js"><link rel="prefetch" href="/assets/js/17.dd3a6c42.js"><link rel="prefetch" href="/assets/js/18.8909c468.js"><link rel="prefetch" href="/assets/js/19.59f0cd7f.js"><link rel="prefetch" href="/assets/js/20.f172fe46.js"><link rel="prefetch" href="/assets/js/21.7d1a23bd.js"><link rel="prefetch" href="/assets/js/22.504104b8.js"><link rel="prefetch" href="/assets/js/24.2ee40903.js"><link rel="prefetch" href="/assets/js/25.77fafe8c.js"><link rel="prefetch" href="/assets/js/26.74bcae02.js"><link rel="prefetch" href="/assets/js/27.2e0fa022.js"><link rel="prefetch" href="/assets/js/28.bd312067.js"><link rel="prefetch" href="/assets/js/29.190b11c8.js"><link rel="prefetch" href="/assets/js/30.8eb4d3ef.js"><link rel="prefetch" href="/assets/js/31.a87f6ffc.js"><link rel="prefetch" href="/assets/js/32.0c143c39.js"><link rel="prefetch" href="/assets/js/33.c1b744a0.js"><link rel="prefetch" href="/assets/js/34.29e618f3.js"><link rel="prefetch" href="/assets/js/4.4d7c21fe.js"><link rel="prefetch" href="/assets/js/5.2f8792e0.js"><link rel="prefetch" href="/assets/js/6.86ef301f.js"><link rel="prefetch" href="/assets/js/7.5f66b1b4.js"><link rel="prefetch" href="/assets/js/8.01e3a6d1.js"><link rel="prefetch" href="/assets/js/9.73b2bb84.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.2c22b78c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-19557b78><div data-v-19557b78><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-19557b78 data-v-19557b78><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-64685f0e data-v-19557b78 data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>Blog</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>dingzhenke</span>
+            
+          <!---->
+          2020
+        </a></span></div></div> <div class="hide" data-v-19557b78><header class="navbar" data-v-19557b78><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Blog</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont undefined"></i>
+  Home
+</a></div><div class="nav-item"><a href="/blog/IO.html" class="nav-link"><i class="iconfont undefined"></i>
+  Blog
+</a></div> <a href="https://github.com/dingzhenke" target="_blank" rel="noopener noreferrer" class="repo-link"><i class="iconfont reco-github"></i>
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask" data-v-19557b78></div> <aside class="sidebar" data-v-19557b78><div class="personal-info-wrapper" data-v-042e23d4><!----> <h3 class="name" data-v-042e23d4>
+    dingzhenke
+  </h3> <div class="num" data-v-042e23d4><div data-v-042e23d4><h3 data-v-042e23d4>24</h3> <h6 data-v-042e23d4>Article</h6></div> <div data-v-042e23d4><h3 data-v-042e23d4>4</h3> <h6 data-v-042e23d4>Tag</h6></div></div> <hr data-v-042e23d4></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont undefined"></i>
+  Home
+</a></div><div class="nav-item"><a href="/blog/IO.html" class="nav-link"><i class="iconfont undefined"></i>
+  Blog
+</a></div> <a href="https://github.com/dingzhenke" target="_blank" rel="noopener noreferrer" class="repo-link"><i class="iconfont reco-github"></i>
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/" aria-current="page" class="sidebar-link">首页</a></li><li><a href="/blog/IO.html" class="sidebar-link">IO类型</a></li><li><a href="/blog/JavaNIO.html" class="sidebar-link">JavaNIO</a></li><li><a href="/blog/JavaNIO_Server.html" class="sidebar-link">JavaNIO Server</a></li><li><a href="/blog/Netty_0.html" class="sidebar-link">Netty源码分析之零</a></li><li><a href="/blog/Netty_1.html" class="sidebar-link">Netty源码分析之一</a></li><li><a href="/blog/Netty_2.html" class="sidebar-link">Netty源码分析之二</a></li><li><a href="/blog/Netty_3.html" class="sidebar-link">Netty源码分析之三</a></li><li><a href="/blog/Netty_4.html" class="sidebar-link">Netty源码分析之四</a></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-64685f0e data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>Dubbo源码分析之Refer</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>dingzhenke</span>
+            
+          <!---->
+          2020
+        </a></span></div></div> <div data-v-19557b78><main class="page"><div class="page-title" style="display:none;"><h1>Dubbo源码分析之Refer</h1> <hr> <div data-v-34ea29db><i class="iconfont reco-account" data-v-34ea29db><span data-v-34ea29db>dingzhenke</span></i> <i class="iconfont reco-date" data-v-34ea29db><span data-v-34ea29db>2020-09-19</span></i> <!----> <i class="iconfont reco-tag tags" data-v-34ea29db><span class="tag-item" data-v-34ea29db>dubbo</span></i></div></div> <div class="theme-reco-content content__default" style="display:none;"><p></p><div class="table-of-contents"><ul><li><a href="#dorefer">doRefer</a></li><li><a href="#创建代理">创建代理</a></li></ul></div>
+本节我们来看看，Dubbo是如何实现refer的。<p></p> <p>dubbo中服务的refer源自ReferenceConfig的refer方法，其源码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>    public synchronized T get() {
+        checkAndUpdateSubConfigs();
+
+        if (destroyed) {
+            throw new IllegalStateException(&quot;The invoker of ReferenceConfig(&quot; + url + &quot;) has already destroyed!&quot;);
+        }
+        if (ref == null) {
+            init();
+        }
+        return ref;
+    }
+</code></pre></div><p>和export一样，配置的整合我们就不看了，主要看init方法。init方法内容众多，大部分都是配置的处理，我用就省略掉，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>    private void init() {
+        //配置的整合
+        ......
+
+        ref = createProxy(map);
+        String serviceKey = URL.buildKey(interfaceName, group, version);
+        ApplicationModel.initConsumerModel(serviceKey, buildConsumerModel(serviceKey, attributes));
+        initialized = true;
+    }
+</code></pre></div><p>这里核心是createProxy，我们深入地看看它：</p> <div class="language- extra-class"><pre class="language-text"><code>    private T createProxy(Map&lt;String, String&gt; map) {
+        if (shouldJvmRefer(map)) {
+            URL url = new URL(LOCAL_PROTOCOL, LOCALHOST_VALUE, 0, interfaceClass.getName()).addParameters(map);
+            invoker = REF_PROTOCOL.refer(interfaceClass, url);
+            if (logger.isInfoEnabled()) {
+                logger.info(&quot;Using injvm service &quot; + interfaceClass.getName());
+            }
+        } else {
+            // assemble URL 
+            ......
+            if (urls.size() == 1) {
+                invoker = REF_PROTOCOL.refer(interfaceClass, urls.get(0));
+            } else {
+                List&lt;Invoker&lt;?&gt;&gt; invokers = new ArrayList&lt;Invoker&lt;?&gt;&gt;();
+                URL registryURL = null;
+                for (URL url : urls) {
+                    invokers.add(REF_PROTOCOL.refer(interfaceClass, url));
+                    if (REGISTRY_PROTOCOL.equals(url.getProtocol())) {
+                        registryURL = url; // use last registry url
+                    }
+                }
+                if (registryURL != null) { // registry url is available
+                    // use RegistryAwareCluster only when register's CLUSTER is available
+                    URL u = registryURL.addParameter(CLUSTER_KEY, RegistryAwareCluster.NAME);
+                    // The invoker wrap relation would be: RegistryAwareClusterInvoker(StaticDirectory) -&gt; FailoverClusterInvoker(RegistryDirectory, will execute route) -&gt; Invoker
+                    invoker = CLUSTER.join(new StaticDirectory(u, invokers));
+                } else { // not a registry url, must be direct invoke.
+                    invoker = CLUSTER.join(new StaticDirectory(invokers));
+                }
+            }
+        }
+        ......
+        // create service proxy
+        return (T) PROXY_FACTORY.getProxy(invoker);
+    }
+</code></pre></div><p>可以看到，这里和export类似，主要做了以下几件事情：
+1、如果配置了本地refer，则refer本地服务
+2、如果没有，则refer远程服务。
+3、最后再调用PROXY_FACTORY创建代理</p> <h2 id="dorefer"><a href="#dorefer" class="header-anchor">#</a> doRefer</h2> <p>refer本地服务比较简单，读者有兴趣可以自己研究，这里只是分析下refer到远程，本次分析使用nacos作为注册中心，且注册中心没有集群，所以会通过REF_PROTOCOL.refer(interfaceClass, urls.get(0))来创建invoker，结合dubbo SPI方式最后调用RegistryProtocol的doRefer方法，方法如下：</p> <div class="language- extra-class"><pre class="language-text"><code>    private &lt;T&gt; Invoker&lt;T&gt; doRefer(Cluster cluster, Registry registry, Class&lt;T&gt; type, URL url) {
+        RegistryDirectory&lt;T&gt; directory = new RegistryDirectory&lt;T&gt;(type, url);
+        directory.setRegistry(registry);
+        directory.setProtocol(protocol);
+        // all attributes of REFER_KEY
+        Map&lt;String, String&gt; parameters = new HashMap&lt;String, String&gt;(directory.getUrl().getParameters());
+        URL subscribeUrl = new URL(CONSUMER_PROTOCOL, parameters.remove(REGISTER_IP_KEY), 0, type.getName(), parameters);
+        if (!ANY_VALUE.equals(url.getServiceInterface()) &amp;&amp; url.getParameter(REGISTER_KEY, true)) {
+            directory.setRegisteredConsumerUrl(getRegisteredConsumerUrl(subscribeUrl, url));
+            registry.register(directory.getRegisteredConsumerUrl());
+        }
+        directory.buildRouterChain(subscribeUrl);
+        directory.subscribe(subscribeUrl.addParameter(CATEGORY_KEY,
+                PROVIDERS_CATEGORY + &quot;,&quot; + CONFIGURATORS_CATEGORY + &quot;,&quot; + ROUTERS_CATEGORY));
+
+        Invoker invoker = cluster.join(directory);
+        ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);
+        return invoker;
+    }
+</code></pre></div><p>我们来分析以下这个方法，它首先新建并初始化一个RegistryDirectory，然后在注册中心中注册该服务，再设置router、订阅provider，最后创建Invoker。最后的创建Invoker是使用cluster.join方法创建，该方法通过dubbo SPI获得一个包裹FailoverCluster的MockClusterWrapper，然后调用其join方法，构建了一个包裹FailoverClusterInvoker的MockClusterInvoker。MockClusterInvoker主要是处理mock，而FailoverClusterInvoker主要是处理失败重试机制。</p> <h2 id="创建代理"><a href="#创建代理" class="header-anchor">#</a> 创建代理</h2> <p>通过上面的分析，我们已经知道了返回的Invoker是一个MockClusterInvoker了，接下来是创建代理，这里还是使用Dubbo的SPI机制，最后调用JavassistProxyFactory.createProxy方法:</p> <div class="language- extra-class"><pre class="language-text"><code>    public &lt;T&gt; T getProxy(Invoker&lt;T&gt; invoker, Class&lt;?&gt;[] interfaces) {
+        return (T) Proxy.getProxy(interfaces).newInstance(new InvokerInvocationHandler(invoker));
+    }
+</code></pre></div><p>这里创建一个代理，该代理的作用是将需要的服务方法调用交给InvokerInvocationHandler代理。</p> <p>至此Dubbo的服务refer基本分析完毕</p></div> <footer class="page-edit" style="display:none;"><!----> <!----></footer> <!----> <!----></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-44bd5a18 data-v-44bd5a18><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-44bd5a18><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-44bd5a18></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-44bd5a18></path></svg></div></div></div>
+    <script src="/assets/js/app.a927c567.js" defer></script><script src="/assets/js/3.c964e36d.js" defer></script><script src="/assets/js/1.31ea971f.js" defer></script><script src="/assets/js/23.fdf72467.js" defer></script>
+  </body>
+</html>
